@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endlosschleifen Videoplayer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #video-container {
+            margin: 20px auto;
+            max-width: 640px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        .controls {
+            margin: 10px 0;
+        }
+        .controls button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .stats {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="video-container">
+            <video ref="videoPlayer" @ended="restartVideo" controls loop>
+                <source src="https://example.com/video.mp4" type="video/mp4">
+                Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+        </div>
+
+        <div class="controls">
+            <button @click="likeVideo">Like</button>
+            <button @click="commentVideo">Kommentieren</button>
+            <button @click="followUser">Folgen</button>
+            <button @click="saveVideo">Video Speichern</button>
+            <button @click="superLikeVideo">Super Like</button>
+        </div>
+
+        <div class="stats">
+            Gesehene Zeit: {{ watchedTime }} Sekunden<br>
+            Like-Zähler: {{ likes }} | Kommentare: {{ comments }} | Follower: {{ followers }} | Gespeicherte Videos: {{ savedVideos }} | Super Likes: {{ superLikes }}
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                likes: 0,
+                comments: 0,
+                followers: 0,
+                savedVideos: 0,
+                superLikes: 0,
+                watchedTime: 0,
+                timer: null
+            },
+            mounted() {
+                this.$refs.videoPlayer.addEventListener('timeupdate', this.updateWatchedTime);
+            },
+            methods: {
+                restartVideo() {
+                    this.$refs.videoPlayer.currentTime = 0;
+                    this.$refs.videoPlayer.play();
+                },
+                updateWatchedTime() {
+                    this.watchedTime = Math.floor(this.$refs.videoPlayer.currentTime);
+                },
+                likeVideo() {
+                    this.likes++;
+                },
+                commentVideo() {
+                    this.comments++;
+                    alert('Kommentarfunktion wurde aktiviert!');
+                },
+                followUser() {
+                    this.followers++;
+                    alert('Folgen erfolgreich!');
+                },
+                saveVideo() {
+                    this.savedVideos++;
+                    alert('Video wurde gespeichert!');
+                },
+                superLikeVideo() {
+                    this.superLikes++;
+                    alert('Super Like vergeben!');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
 
